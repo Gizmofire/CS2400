@@ -249,7 +249,14 @@ public final class ArrayBag<T> implements BagInterface<T>
     public boolean equals(ArrayBag<T> aBag) {
         boolean result = false; // result of comparison of bags
 
-        // COMPLETE THIS METHOD 
+        for (int index = 0; index < numberOfEntries; index++) {
+            if (aBag.getFrequencyOf(bag[index]) == getFrequencyOf(bag[index])) {
+                result = true;
+            } else {
+                result = false;
+                break;
+            }
+        } // end for 
 
         return result;
     }  // end equals
@@ -259,7 +266,15 @@ public final class ArrayBag<T> implements BagInterface<T>
      */
     public boolean duplicateAll() {
         checkIntegrity();
-        boolean success = false; // 
+        boolean success = false; 
+      
+        if ( (numberOfEntries * 2) <= MAX_CAPACITY) {
+            for (int index = 0; index < numberOfEntries; index++) {
+                add(bag[index]);
+               //  TEST if passes 
+            }
+            success = true;
+        }
 
         // COMPLETE THIS METHOD 
 
@@ -270,7 +285,19 @@ public final class ArrayBag<T> implements BagInterface<T>
      */
     public void removeDuplicates() {
         checkIntegrity();
- 
+
+
+         if (numberOfEntries > 1) {
+            for (int index = 0; index < numberOfEntries; index++) {
+                T item = bag[index];
+                int frequency = getFrequencyOf(item);
+                if (frequency > 1) {
+                    for (int i = 0; i < frequency - 1; i++) {
+                        remove(item);
+                    }
+                }
+            }
+         }
         // COMPLETE THIS METHOD 
 
         return;
