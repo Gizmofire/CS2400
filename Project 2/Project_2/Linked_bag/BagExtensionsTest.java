@@ -1,4 +1,8 @@
 
+import java.lang.reflect.Array;
+import java.time.chrono.IsoEra;
+
+
 /**
  * This class performs tests on the extensions to the LinkedBag class.
  * 
@@ -904,6 +908,109 @@ public class BagExtensionsTest {
             System.out.println("*** Failed test");
 
         }
+
+        System.out.println("Bag slpit");
+        
+        LinkedBag<String>  testBag38 = new LinkedBag<String>();
+        LinkedBag<String>  testBag39 = new LinkedBag<String>();
+
+        if ( testBag37.splitInto(testBag38, testBag39)) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+
+        }
+
+        System.out.println("Bag add");
+        System.out.println("Adding all items from an empty bag to another empty bag");
+        LinkedBag<String> emptyBag1 = new LinkedBag<>();
+        LinkedBag<String> emptyBag2 = new LinkedBag<>();
+        emptyBag1.addAll(emptyBag2);
+        if (emptyBag1.equals(emptyBag2)) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+        }
+        System.out.println();
+    
+        // Test adding all items from a non-empty bag to an empty bag
+        System.out.println("Adding all items from a non-empty bag to an empty bag");
+        LinkedBag<String> nonEmptyBag = new LinkedBag<>();
+        nonEmptyBag.add("A");
+        nonEmptyBag.add("B");
+        nonEmptyBag.add("C");
+        emptyBag1.addAll(nonEmptyBag);
+        if (emptyBag1.getCurrentSize() == 3 && emptyBag1.contains("A") && emptyBag1.contains("B") && emptyBag1.contains("C")) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+        }
+
+
+    System.out.println("TESTING IS SET");
+
+    // Test with an empty bag
+    LinkedBag<String> emptyBag = new LinkedBag<>();
+    if (emptyBag.isSet()) {
+        System.out.println("    Passed test with empty bag");
+    } else {
+        System.out.println("*** Failed test with empty bag");
+    }
+
+    // Test with a bag that has no duplicates
+    LinkedBag<String> noDuplicatesBag = new LinkedBag<>();
+    noDuplicatesBag.add("A");
+    noDuplicatesBag.add("B");
+    noDuplicatesBag.add("C");
+    if (noDuplicatesBag.isSet()) {
+        System.out.println("    Passed test with no duplicates");
+    } else {
+        System.out.println("*** Failed test with no duplicates");
+    }
+
+    // Test with a bag that has duplicates
+    LinkedBag<String> duplicatesBag = new LinkedBag<>();
+    duplicatesBag.add("A");
+    duplicatesBag.add("B");
+    duplicatesBag.add("A");
+    if (!duplicatesBag.isSet()) {
+        System.out.println("    Passed test with duplicates");
+    } else {
+        System.out.println("*** Failed test with duplicates");
+    }
+
+    System.out.println("TESTING GET MODE");
+
+    // Test with an empty bag
+    LinkedBag<String> emptyBag = new LinkedBag<>();
+    if (emptyBag.getMode() == null) {
+        System.out.println("    Passed test with empty bag");
+    } else {
+        System.out.println("*** Failed test with empty bag");
+    }
+
+    // Test with a bag that has a single mode
+    LinkedBag<String> singleModeBag = new LinkedBag<>();
+    singleModeBag.add("A");
+    singleModeBag.add("B");
+    singleModeBag.add("A");
+    if ("A".equals(singleModeBag.getMode())) {
+        System.out.println("    Passed test with single mode");
+    } else {
+        System.out.println("*** Failed test with single mode");
+    }
+
+    // Test with a bag that has no single mode
+    LinkedBag<String> noSingleModeBag = new LinkedBag<>();
+    noSingleModeBag.add("A");
+    noSingleModeBag.add("B");
+    noSingleModeBag.add("A");
+    noSingleModeBag.add("B");
+    if (noSingleModeBag.getMode() == null) {
+        System.out.println("    Passed test with no single mode");
+    } else {
+        System.out.println("*** Failed test with no single mode");
+    }
 
 
         System.out.println();
