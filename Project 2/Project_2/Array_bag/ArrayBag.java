@@ -249,14 +249,34 @@ public final class ArrayBag<T> implements BagInterface<T>
     public boolean equals(ArrayBag<T> aBag) {
         boolean result = false; // result of comparison of bags
 
-        for (int index = 0; index < numberOfEntries; index++) {
-            if (aBag.getFrequencyOf(bag[index]) == getFrequencyOf(bag[index])) {
-                result = true;
-            } else {
-                result = false;
-                break;
+      // COMPLETE THIS METHODZ
+         try {        
+            if (aBag.getCurrentSize()  ==  numberOfEntries) {
+               return true;
             }
-        } // end for 
+
+         for (int index = 0; index < numberOfEntries; index++) {
+               if (aBag.getFrequencyOf(bag[index]) == getFrequencyOf(bag[index])) {
+                  result = true;
+               } else {
+                  result = false;
+                  break;
+               }
+         } 
+         for (int index = 0; index < aBag.getCurrentSize() ; index++) {
+            if (aBag.getFrequencyOf(bag[index]) == getFrequencyOf(bag[index])) {
+               result = true;
+            } else {
+               result = false;
+               break;
+            }
+            } // end for 
+
+         } catch (Exception e) {
+            result = false;
+         }
+
+
 
         return result;
     }  // end equals
@@ -268,13 +288,19 @@ public final class ArrayBag<T> implements BagInterface<T>
         checkIntegrity();
         boolean success = false; 
       
-        if ( (numberOfEntries * 2) <= MAX_CAPACITY) {
-            for (int index = 0; index < numberOfEntries; index++) {
-                add(bag[index]);
-               //  TEST if passes 
-            }
+         if (numberOfEntries == 0) {
             success = true;
-        }
+         
+         } else if ((numberOfEntries * 2) <= MAX_CAPACITY && (numberOfEntries * 2) <= bag.length) {
+            int originalSize = numberOfEntries;
+            for (int index = 0; index < originalSize; index++) {
+               add(bag[index]);
+                           }
+            success = true;
+         }  else {
+
+            success = false; 
+         }
 
         // COMPLETE THIS METHOD 
 
@@ -290,21 +316,151 @@ public final class ArrayBag<T> implements BagInterface<T>
          if (numberOfEntries > 1) {
             for (int index = 0; index < numberOfEntries; index++) {
                 T item = bag[index];
-                int frequency = getFrequencyOf(item);
-                if (frequency > 1) {
-                    for (int i = 0; i < frequency - 1; i++) {
-                        remove(item);
-                    }
-                }
+                while (getFrequencyOf(item) > 1) {
+                  remove(item);
+              }
             }
+
+            for (int index = 0; index < numberOfEntries; index++) {
+               T item = bag[index];
+               while (getFrequencyOf(item) > 1) {
+                 remove(item);
+             }
+           }
          }
         // COMPLETE THIS METHOD 
-
-        return;
     }  // end removeDuplicates
     
+    /*
+     * 
+      
+      public void removeDuplicates() {
+         checkIntegrity();
+
+         if (numberOfEntries > 1) {
+            for (int index = 0; index < numberOfEntries; index++) {
+                  T item = bag[index];
+                  int frequency = getFrequencyOf(item);
+                  while (frequency > 1) {
+                     int removeIndex = getIndexOf(item);
+                     removeEntry(removeIndex);
+                     frequency--;
+                  }
+            }
+         }
+      }  // end removeDuplicates
+     */
+
+   /*
+      public void removeDuplicates() {
+      checkIntegrity();
+
+      BagInterface<T> uniqueItemsBag = new ArrayBag<>(numberOfEntries);
+
+      T[] itemsArray = toArray();
+      for (T item : itemsArray) {
+         if (!uniqueItemsBag.contains(item)) {
+            uniqueItemsBag.add(item);
+         }
+      }
+
+      clear();
+
+      T[] uniqueItemsArray = uniqueItemsBag.toArray();
+      for (T item : uniqueItemsArray) {
+         add(item);
+      }
+   }  // end removeDuplicates
+   
+   */ 
+   /* 
+   public boolean splitInto(BagInterface<T> first, BagInterface<T> second) {
+      checkIntegrity();
+  
+      int halfSize = numberOfEntries / 2;
+      int firstBagSize = (numberOfEntries % 2 == 0) ? halfSize : halfSize + 1;
+  
+      if (first.getCurrentSize() + firstBagSize > first.getCurrentSize() ||
+          second.getCurrentSize() + halfSize > second.getCurrentSize()) {
+         return false; // Overflow would occur
+     }
+  
+      for (int i = 0; i < firstBagSize; i++) {
+          if (!first.add(bag[i])) {
+              return false; // Overflow occurred
+          }
+      }
+  
+      for (int i = firstBagSize; i < numberOfEntries; i++) {
+          if (!second.add(bag[i])) {
+              return false; // Overflow occurred
+          }
+      }
+  
+      clear();
+  
+      return true; // Split was successful
+  } 
+    */
+
+   public boolean addAll(BagInterface<T> toAdd) {
+      checkIntegrity();
+  
+      T[] itemsToAdd = toAdd.toArray();
+      if (numberOfEntries + itemsToAdd.length > bag.length) {
+          return false; // Overflow would occur
+      }
+  
+      for (T item : itemsToAdd) {
+          add(item);
+      }
+  
+      return true; // Addition was successful
+   }
     
-    
+
+
+   public boolean isSet() {
+      checkIntegrity();
+  
+      for (int index = 0; index < numberOfEntries; index++) {
+          T item = bag[index];
+          if (getFrequencyOf(item) > 1) {
+              return false; // Duplicate found
+          }
+      }
+  
+      return true; // No duplicates found
+  }
+
+
+public T getMode() {
+   checkIntegrity();
+   if (isEmpty()) {
+         return null; 
+   }
+
+   T mode = null;
+   int maxFrequency = 0;
+   boolean unique = true;
+
+   for (int index = 0; index < numberOfEntries; index++) {
+         T item = bag[index];
+         int frequency = getFrequencyOf(item);
+
+         if (frequency > maxFrequency) {
+            mode = item;
+            maxFrequency = frequency;
+            unique = true;
+         } else if (frequency == maxFrequency && !item.equals(mode)) {
+            unique = false;
+         }
+   }
+
+   return unique ? mode : null;
+}
+
+  
 } // end ArrayBag
 
 

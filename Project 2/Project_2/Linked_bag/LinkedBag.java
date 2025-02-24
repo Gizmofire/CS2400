@@ -196,10 +196,24 @@ public final class LinkedBag<T> implements BagInterface<T>
      * @return True if the two bags contain the same objects with the same frequencies.
      */
     public boolean equals(LinkedBag<T> aBag) {
-        boolean result = false; // result of comparison of bags
+        if (this == aBag) {
+            return true;
+        }
 
-        // COMPLETE THIS METHOD 
-        return result;
+        if (aBag == null || this.numberOfEntries != aBag.numberOfEntries) {
+            return false;
+        }
+
+        Node currentNode = this.firstNode;
+        while (currentNode != null) {
+            T data = currentNode.data;
+            if (this.getFrequencyOf(data) != aBag.getFrequencyOf(data)) {
+                return false;
+            }
+            currentNode = currentNode.next;
+        }
+
+        return true;
     }  // end equals
 
     /** Duplicate all the items in a bag.

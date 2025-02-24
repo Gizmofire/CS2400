@@ -51,6 +51,7 @@ public class BagExtensionsTest {
         checkRemove();
         checkDuplicateAll();
         checkRemoveDuplicates();
+        otherChecks();
     }
 
     public static void initializeBags() {
@@ -889,7 +890,7 @@ public class BagExtensionsTest {
  
 
         // Check that it works on a bag where every itme is duplicated
-        System.out.println("Checking a bag with all items duplicated to see that duplicates are removed");
+        System.out.println("Checking a bag with all items duplicated to see that duplicates are removed HERE");
         testBag37.removeDuplicates();
         if (testBag37.equals(testBag36)) {
             System.out.println("    Passed test");
@@ -899,9 +900,61 @@ public class BagExtensionsTest {
         }
 
 
+        String got1 = testBag37.toString();
+        System.out.println( got1);
+        got1 = testBag36.toString();
+        System.out.println( got1);
+        // int startSize = testBag37.getCurrentSize();
+
+        // for (int i = 0; i < startSize; i++) {
+        //     String got1 = testBag37.toString();
+           
+        // }
+
+
 
 
 
         System.out.println();
+    }
+
+    public static  void otherChecks(){
+        System.out.println("Checking if cleared");
+        testBag37.clear();
+        if (testBag37.isEmpty()) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+
+        }
+
+        System.out.println("Checking if J is added");
+        testBag36.add("J");
+        testBag37.add("A");
+        testBag37.add("B");
+        testBag37.add("C");
+        testBag37.add("D");
+        testBag37.add("E");
+        testBag37.add("G");
+        testBag37.add("F");
+        testBag37.add("H");
+        testBag37.add("I");
+        testBag37.add("J");
+
+        if (testBag37.equals(testBag36)) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+
+        }
+
+        System.out.println("Checking if 10 items are added");
+        if (testBag37.getCurrentSize() == 10) {
+            System.out.println("    Passed test");
+        } else {
+            System.out.println("*** Failed test");
+
+        }
+
     }
 }
