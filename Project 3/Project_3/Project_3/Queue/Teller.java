@@ -1,7 +1,6 @@
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Font;
 import QueuePackage.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Random;
 
 /**
@@ -72,6 +71,15 @@ public class Teller
     	public void process()
     	{
     	   // ADD CODE HERE FOR PROCESSING A CUSTOMER
+
+            
+            if(!theLine.isEmpty())
+            {
+                Customer next = theLine.getFront();
+                lastNameWas = next.getName();
+                theLine.dequeue();
+                serve(next);
+            }
    	   
     	}
 

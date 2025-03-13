@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 /**
@@ -76,21 +75,31 @@ public class StackSort {
      * @return     An array of sorted integers. 
      */
     private static int[] doStackSort(int data[]) {
+        int result[] = new int[data.length];
 
-    int result[] = new int[data.length];
+        VectorStack<Integer> lowerStack = new VectorStack<>();
+        VectorStack<Integer> upperStack = new VectorStack<>();
 
-        
-    // ADD CODE HERE TO SORT THE ARRAY USING TWO STACKS
+        for (int val : data) {
+            while (!upperStack.isEmpty() && upperStack.peek() > val) {
+                lowerStack.push(upperStack.pop());
+            }
 
+            upperStack.push(val);
 
+            while (!lowerStack.isEmpty()) {
+                upperStack.push(lowerStack.pop());
+            }
+        }
 
-
-
-
-    
+        int index = 0;
+        while (!upperStack.isEmpty()) {
+            result[index++] = upperStack.pop();
+        }
 
         return result;
 
+        // passed test cases
     }
 
     /**
