@@ -39,6 +39,11 @@ public class Teller
         
         //ADD CODE HERE TO GENERATE THE INITIAL EVENT
 
+        double initialTime = 0.0; // Start at time 0.0
+        String action = "Check for customers";
+        CheckForCustomerEvent initialEvent = new CheckForCustomerEvent(initialTime, action);
+        theEventQueue.add(initialEvent);
+
         
 
         } // end constructor
@@ -68,20 +73,30 @@ public class Teller
     	 * Process the event.
     	 */
     	synchronized
-    	public void process()
-    	{
-    	   // ADD CODE HERE FOR PROCESSING A CUSTOMER
-
-            
-            if(!theLine.isEmpty())
-            {
+    	public void process() {
+            if (!theLine.isEmpty()) {
+                
                 Customer next = theLine.getFront();
                 lastNameWas = next.getName();
                 theLine.dequeue();
                 serve(next);
+
+                double nextEventTime = theEventQueue.getCurrentTime() + sharedRandomGenerator.nextInt(maxForHelp);
+                CheckForCustomerEvent nextEvent = new CheckForCustomerEvent(nextEventTime, "Check for customers");
+                theEventQueue.add(nextEvent);
+                postActionReport = "Served customer: " + lastNameWas;
+            } else {
+
+                // no one being served
+                serving = null;
+
+               
+                double nextEventTime = theEventQueue.getCurrentTime() + sharedRandomGenerator.nextInt(maxForHelp);
+                CheckForCustomerEvent nextEvent = new CheckForCustomerEvent(nextEventTime, "Check for customers");
+                theEventQueue.add(nextEvent);
+                postActionReport = "No customers to serve.";
             }
-   	   
-    	}
+        }
 
     }  // end of GenerateCustomerEvent    
     
