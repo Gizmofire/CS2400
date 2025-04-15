@@ -78,9 +78,29 @@ public class BankActionThread extends ActionThread
     }
         
 
-    public void executeApplication()
-    {
-        //ADD CODE HERE TO RUN THE EVENT SIMULATION
+    public void executeApplication() {
+        while (!theEvents.isEmpty() && theEvents.peek().getTime() <= stopSimulationAt) {
+            // Process the next event
+            SimulationEvent currentEvent = theEvents.remove();
+            currentEvent.process();
+
+            // Get the post-action report from the event and set lastEventReport
+            lastEventReport = currentEvent.getPostActionReport();
+
+            // If there is a next event, get the description and set nextEventAction
+            SimulationEvent nextEvent = theEvents.peek();
+            if (nextEvent != null) {
+                nextEventAction = nextEvent.getDescription();
+            } else {
+                nextEventAction = "No events to process";
+            }
+
+            // Update the time for the report
+            myReport.updateTime(currentEvent.getTime());
+
+            // Pause the animation
+            animationPause();
+        }
     }
     
 
