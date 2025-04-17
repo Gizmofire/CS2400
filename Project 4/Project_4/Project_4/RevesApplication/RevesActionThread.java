@@ -55,6 +55,26 @@ public class RevesActionThread extends ActionThread
         movesMade = 0;
         moveString = "";
 
+        a = new Pole("A", disks);
+        b = new Pole("B", disks);
+        c = new Pole("C", disks);
+        d = new Pole("D", disks);
+
+
+        for (int i = disks; i > 0; i--)
+        {
+            Disk d = new Disk(i);
+            a.addDisk(d);
+            
+        }
+
+      
+
+
+        
+
+
+
         // ADD INITIALIZATION CODE HERE
 
     }
@@ -63,6 +83,8 @@ public class RevesActionThread extends ActionThread
     public void executeApplication()
     {
         // ADD CODE THAT WILL DO A SINGLE EXECUTION
+
+        moveDisk(a, b);
     }
 
     /**
@@ -75,7 +97,11 @@ public class RevesActionThread extends ActionThread
     {
         Disk toMove = null;
         
-        // ADD CODE HERE TO MOVE A DISK FROM ONE POLE TO THE OTHER
+        if (from.getCount() > 0)
+        {
+            toMove = from.removeDisk();
+            to.addDisk(toMove);
+        }
 
         movesMade++;
         moveString = "Move #" + movesMade 
@@ -84,6 +110,21 @@ public class RevesActionThread extends ActionThread
                         + " to " + to.getName() ;
                         
         animationPause();            
+    }
+
+
+    // finds the lowest k number 
+    public void revesPuzzComputek(int n) {
+        
+        for( int k = 1; k > n; k++) {
+            int testK = (k*(k+1)/2);
+
+           
+        }
+
+        System.err.println("The lowest k number is: " + k);
+
+
     }
 
     
