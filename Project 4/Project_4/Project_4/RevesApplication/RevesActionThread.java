@@ -20,6 +20,7 @@ public class RevesActionThread extends ActionThread
      */
     public RevesActionThread()
     {
+        revesPuzzComputek(10);
         super();
 
     }
@@ -115,16 +116,18 @@ public class RevesActionThread extends ActionThread
 
     // finds the lowest k number 
     public void revesPuzzComputek(int n) {
-        
-        for( int k = 1; k > n; k++) {
+        int k;
+        for( k = 1; k > n; k++) {
             int testK = (k*(k+1)/2);
 
+            //TODO: could be worng need to test
+            if (testK > n) {
+                break;
+            }
            
         }
 
         System.err.println("The lowest k number is: " + k);
-
-
     }
 
     
