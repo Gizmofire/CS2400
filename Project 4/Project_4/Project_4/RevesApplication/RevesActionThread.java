@@ -20,7 +20,7 @@ public class RevesActionThread extends ActionThread
      */
     public RevesActionThread()
     {
-        revesPuzzComputek(10);
+        
         super();
 
     }
@@ -69,6 +69,8 @@ public class RevesActionThread extends ActionThread
             
         }
 
+       
+
       
 
 
@@ -85,7 +87,9 @@ public class RevesActionThread extends ActionThread
     {
         // ADD CODE THAT WILL DO A SINGLE EXECUTION
 
-        moveDisk(a, b);
+        // revesPuzzComputeKSolver(a, d, b, disks);
+
+        revesRecurSolver(a, d, b, c, disks);
     }
 
     /**
@@ -97,6 +101,7 @@ public class RevesActionThread extends ActionThread
     public void moveDisk(Pole from, Pole to)
     {
         Disk toMove = null;
+    
         
         if (from.getCount() > 0)
         {
@@ -117,11 +122,11 @@ public class RevesActionThread extends ActionThread
     // finds the lowest k number 
     public void revesPuzzComputek(int n) {
         int k;
-        for( k = 1; k > n; k++) {
+        for( k = 1; ; k++) {
             int testK = (k*(k+1)/2);
 
             //TODO: could be worng need to test
-            if (testK > n) {
+            if (testK >= n) {
                 break;
             }
            
@@ -129,6 +134,39 @@ public class RevesActionThread extends ActionThread
 
         System.err.println("The lowest k number is: " + k);
     }
+
+
+
+    public void revesPuzzComputeKSolver(Pole source, Pole dest, Pole spare, int n) {
+        if (n == 1) {
+            moveDisk(source, dest);
+        } else {
+        
+            revesPuzzComputeKSolver(source, spare, dest, n - 1);
+            moveDisk(source, dest);
+            revesPuzzComputeKSolver(spare, dest, source, n - 1);
+        }
+    }
+
+
+    public void revesRecurSolver(Pole source, Pole dest, Pole spare, Pole spare2, int n) {
+        if (n == 0) {
+            return;
+        }
+
+        // Calculate k using the formula k = Math.round(n + 1 - Math.sqrt(2 * n + 1))
+        int k = (int) Math.round(n + 1 - Math.sqrt(2 * n + 1));
+
+        // Move the first k disks to the spare2 pole using the recursive solver
+        revesRecurSolver(source, spare2, spare, dest, k);
+
+        // Move the remaining n - k disks directly to the destination using the 3-pole solver
+        revesPuzzComputeKSolver(source, dest, spare, n - k);
+
+        // Move the k disks from the spare2 pole to the destination
+        revesRecurSolver(spare2, dest, spare, source, k);
+    }
+
 
     
     // ADD METHODS HERE
